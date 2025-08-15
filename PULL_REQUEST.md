@@ -5,4 +5,7 @@ This PR bootstraps the BFB project with:
 - Minimal PySide6 skeleton and models
 - Basic unit tests and README files
 
-See `PR_DESCRIPTION.md` for details.
+Next steps:
+- Add Add Field dialog and Field Editor
+- Wire Save/Load and Publish call
+- Add CI workflow and accessibility smoke tests

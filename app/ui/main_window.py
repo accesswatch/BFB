@@ -12,6 +12,7 @@ from ..services.form_service import FormService
 from ..services.wp_client import WPClient
 from .add_field_dialog import AddFieldDialog
 from .field_editor_panel import FieldEditorPanel
+from .wordpress_dialog import WordPressDialog
 
 
 class MainWindow(QMainWindow):
@@ -351,10 +352,22 @@ class MainWindow(QMainWindow):
     def publish_form(self):
         """Publish form to WordPress"""
         if not self.current_form:
+            QMessageBox.warning(self, "No Form", "Please create or open a form before publishing.")
             return
             
-        # TODO: Implement WordPress publishing dialog
-        QMessageBox.information(self, "Publish", "WordPress publishing functionality will be implemented in a future update.")
+        # Show WordPress dialog
+        dialog = WordPressDialog(self, self.current_form)
+        dialog.form_published.connect(self.on_form_published)
+        dialog.exec()
+        
+    def on_form_published(self, result: dict):
+        """Handle successful form publishing"""
+        form_id = result.get('id', 'Unknown')
+        self.status_bar.showMessage(f"Form published successfully! WordPress Form ID: {form_id}")
+        
+        # Optionally update the form ID in our model
+        if 'id' in result and isinstance(result['id'], int):
+            self.current_form.id = result['id']
         
     def add_field(self):
         """Show add field dialog"""

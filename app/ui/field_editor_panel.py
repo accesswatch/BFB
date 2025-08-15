@@ -375,3 +375,45 @@ class FieldEditorPanel(QScrollArea):
         self.choices_list.setCurrentRow(current_row + 1)
         
         self.field_updated.emit(self.current_field)
+        
+    def setup_accessibility(self):
+        """Setup accessibility attributes"""
+        # Set accessible names and descriptions
+        self.setAccessibleName("Field Editor Panel")
+        self.setAccessibleDescription("Panel for editing properties of the selected field. Use Tab to navigate between controls.")
+        
+        # Set focus policy for better keyboard navigation
+        self.setFocusPolicy(Qt.StrongFocus)
+        
+        # Enhanced accessibility for form controls
+        if hasattr(self, 'label_edit'):
+            self.label_edit.setAccessibleName("Field Label")
+            self.label_edit.setAccessibleDescription("The display label for this field")
+        
+        if hasattr(self, 'admin_label_edit'):
+            self.admin_label_edit.setAccessibleName("Admin Label")
+            self.admin_label_edit.setAccessibleDescription("Administrative label for this field, used in backend")
+        
+        if hasattr(self, 'description_edit'):
+            self.description_edit.setAccessibleName("Field Description")
+            self.description_edit.setAccessibleDescription("Help text that appears with the field")
+        
+        if hasattr(self, 'required_check'):
+            self.required_check.setAccessibleName("Required Field")
+            self.required_check.setAccessibleDescription("Check this box to make the field required")
+        
+        if hasattr(self, 'size_combo'):
+            self.size_combo.setAccessibleName("Field Size")
+            self.size_combo.setAccessibleDescription("Visual size of the field: Small, Medium, or Large")
+        
+        if hasattr(self, 'css_class_edit'):
+            self.css_class_edit.setAccessibleName("CSS Class")
+            self.css_class_edit.setAccessibleDescription("Custom CSS class for styling this field")
+        
+        if hasattr(self, 'placeholder_edit'):
+            self.placeholder_edit.setAccessibleName("Placeholder Text")
+            self.placeholder_edit.setAccessibleDescription("Placeholder text shown inside empty field")
+        
+        if hasattr(self, 'default_value_edit'):
+            self.default_value_edit.setAccessibleName("Default Value")
+            self.default_value_edit.setAccessibleDescription("Default value for this field")

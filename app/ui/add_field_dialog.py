@@ -149,11 +149,18 @@ class AddFieldDialog(QDialog):
             
             if field_type in field_types:
                 info = field_types[field_type]
-                self.description_label.setText(f"<b>{info['name']}</b><br>{info['description']}")
+                description_text = f"<b>{info['name']}</b><br>{info['description']}"
+                self.description_label.setText(description_text)
+                
+                # Enhanced accessibility - announce the selection
+                announcement = f"Selected {info['name']}. {info['description']}"
+                self.description_label.setAccessibleDescription(announcement)
+                
                 self.selected_field_type = field_type
                 self.add_button.setEnabled(True)
         else:
             self.description_label.setText("Select a field type to see its description.")
+            self.description_label.setAccessibleDescription("No field type selected")
             self.selected_field_type = None
             self.add_button.setEnabled(False)
             
@@ -169,9 +176,17 @@ class AddFieldDialog(QDialog):
             if self.field_list.hasFocus() and self.selected_field_type:
                 self.accept_selection()
                 return
+            elif self.add_button.hasFocus() and self.add_button.isEnabled():
+                self.accept_selection()
+                return
         elif event.key() == Qt.Key_Escape:
             self.reject()
             return
+        elif event.key() == Qt.Key_Up or event.key() == Qt.Key_Down:
+            # Ensure arrow keys work properly in the list
+            if self.field_list.hasFocus():
+                super().keyPressEvent(event)
+                return
             
         super().keyPressEvent(event)
         
